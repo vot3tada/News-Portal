@@ -35,7 +35,3 @@ Like.belongsTo(User);
 
 Post.belongsToMany(Teg, { through: PostTeg });
 Teg.belongsToMany(Post, { through: PostTeg });
-
-sequelize.sync({ force: true })
-    .then(() => console.log('Таблицы успешно созданы'))
-    .catch(error => console.log(`Ошибка при создании таблиц: ${error}`));
