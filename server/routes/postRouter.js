@@ -1,5 +1,6 @@
 const Router = require('express')
 const router = new Router()
+const userController = require('../controllers/postController')
 
 router.get('/',)
 router.get('/:id',)
