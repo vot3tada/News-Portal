@@ -1,9 +1,10 @@
 const Router = require('express')
 const router = new Router()
-const userController = require('../controllers/tagController')
+const tagController = require('../controllers/tagController')
 
-router.get('/',)
-router.get('/:id',)
-router.post('/',)
+router.post('/', tagController.add)
+router.get('/',tagController.getAll)
+//router.get('/:id',)
+
 
 module.exports = router

@@ -1,22 +1,21 @@
 const sequelize = require('../db')
 const {DataTypes} = require('sequelize')
 
-const User = sequelize.define('user',{
+const User = sequelize.define('users',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING},
     login: {type: DataTypes.STRING, unique: true},
     password: {type: DataTypes.STRING},
     role: {type: DataTypes.STRING, defaultValue: "USER"}
 }) 
-const Post = sequelize.define('post',{
+const Post = sequelize.define('posts',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     title: {type: DataTypes.STRING},
     content: {type: DataTypes.STRING},
     image: {type: DataTypes.STRING, allowNull: true},
-    likes: {type:DataTypes.INTEGER},
     createdAt: {type: DataTypes.DATE, defaultValue: sequelize.literal('CURRENT_TIMESTAMP')},
 })
-const Like = sequelize.define('Like', {
+const Like = sequelize.define('likes', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
 });
 const Tag = sequelize.define('tags', {
@@ -35,3 +34,7 @@ Like.belongsTo(User);
 
 Post.belongsToMany(Tag, { through: PostTag });
 Tag.belongsToMany(Post, { through: PostTag });
+
+module.exports = {
+    User, Post, Like, Tag, PostTag
+}
