@@ -19,11 +19,11 @@ const Post = sequelize.define('post',{
 const Like = sequelize.define('Like', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
 });
-const Teg = sequelize.define('tegs', {
+const Tag = sequelize.define('tags', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING}
 })
-const PostTeg = sequelize.define('post_teg', {
+const PostTag = sequelize.define('post_tag', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true}
 });
 
@@ -33,5 +33,5 @@ Post.belongsTo(User);
 User.hasMany(Like);
 Like.belongsTo(User);
 
-Post.belongsToMany(Teg, { through: PostTeg });
-Teg.belongsToMany(Post, { through: PostTeg });
+Post.belongsToMany(Tag, { through: PostTag });
+Tag.belongsToMany(Post, { through: PostTag });
