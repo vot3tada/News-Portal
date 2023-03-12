@@ -24,14 +24,23 @@ class PostController {
     }
 
     async getAll(req, res) {
-        const {tagId} = req.query
-        let posts = await Post.findAll({where: {...(tagId ? tagId : {})}})
+        const {tagId, id} = req.query
+        let posts = await Post.findAll({where: {...(tagId ? {tagId: +tagId} : {})}})
         return res.json(posts)
     }
 
 
-    async getOne(req, res) {
-
+    async getOne(req, res, next) {
+        try{
+            const {id} = req.params
+            let post = await Post.findOne({where: {...(id ? {id: +id} : {})}})
+            if (!post) throw ApiError.notFound()
+            return res.json(post)
+        }
+        catch (e)
+        {
+            next(ApiError.notFound(e.message))
+        }
     }
 
     async delete(req, res) {
