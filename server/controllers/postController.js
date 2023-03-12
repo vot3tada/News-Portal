@@ -31,16 +31,10 @@ class PostController {
 
 
     async getOne(req, res, next) {
-        try{
             const {id} = req.params
             let post = await Post.findOne({where: {...(id ? {id: +id} : {})}})
-            if (!post) throw ApiError.notFound()
+            if (!post) return next(ApiError.notFound())
             return res.json(post)
-        }
-        catch (e)
-        {
-            next(ApiError.notFound(e.message))
-        }
     }
 
     async delete(req, res) {
