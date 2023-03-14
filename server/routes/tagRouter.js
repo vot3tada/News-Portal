@@ -3,6 +3,7 @@ const router = new Router()
 const tagController = require('../controllers/tagController')
 
 router.post('/', tagController.add)
+router.post('/link',tagController.linkPostToTag)
 router.get('/',tagController.getAll)
 //router.get('/:id',)
 

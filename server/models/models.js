@@ -30,7 +30,11 @@ User.hasMany(Post);
 Post.belongsTo(User);
 
 User.hasMany(Like);
+Post.hasMany(Like);
 Like.belongsTo(User);
+Like.belongsTo(Post);
+
+Post.hasMany(PostTag);
 
 Post.belongsToMany(Tag, { through: PostTag });
 Tag.belongsToMany(Post, { through: PostTag });

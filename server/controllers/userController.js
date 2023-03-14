@@ -24,7 +24,7 @@ class UserController {
     }
 
 
-    async login(req, res) {
+    async login(req, res, next) {
         const {login, password} = req.body
         const user = await User.findOne({where: {login}})
         if (!user) return next(ApiError.internal('Пользователь не найден'))

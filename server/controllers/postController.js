@@ -1,4 +1,4 @@
-const {Post} = require('../models/models')
+const {Post, PostTag,Like} = require('../models/models')
 const ApiError = require('../error/ApiError')
 const path = require('path')
 const uuid = require('uuid')
@@ -9,8 +9,7 @@ class PostController {
         try {
             const {title, content} = req.body
             const {image} = req.files
-            if (image)
-            {
+            if (image) {
                 let filename = uuid.v4() + ".jpg"
                 image.mv(path.resolve(__dirname, '..', 'static', filename))
                 const post = await Post.create({title, content, image: filename})
@@ -18,8 +17,7 @@ class PostController {
             }
             const post = await Post.create({title, content})
             return res.json(post)
-        }
-        catch (e) {
+        } catch (e) {
             next(ApiError.badRequest(e.message))
         }
     }
@@ -32,10 +30,10 @@ class PostController {
             post.title = title
             post.content = content
             const {image} = req.files
-            if (image)
-            {
+            if (image) {
                 if (post.image) fs.unlink(path.resolve(__dirname, '..', 'static', post.image), (err) => {
-                    if (err) throw err})
+                    if (err) throw err
+                })
                 let filename = uuid.v4() + ".jpg"
                 image.mv(path.resolve(__dirname, '..', 'static', filename))
                 post.image = filename
@@ -44,16 +42,33 @@ class PostController {
             }
             await post.save()
             return res.json(post)
-        }
-        catch (e) {
+        } catch (e) {
             next(ApiError.notFound(e.message))
         }
     }
 
     async getAll(req, res) {
-        const {tagId, id} = req.query
-        let posts = await Post.findAll({where: {...(tagId ? {tagId: +tagId} : {})}})
+        const {tagId} = req.query
+        let posts = await Post.findAll({
+            include: [{model: PostTag, where: {...(tagId ? {tagId: +tagId} : {})},}]
+            //through: {attributes: []},
+            //attributes: []}]
+        })
         return res.json(posts)
+    }
+
+    async likePost(req, res, next) {
+        try {
+            const {id} = req.params
+            const {userId} = req.body
+            if (!id || !userId) throw ApiError.notFound()
+            await Like.create({userId, postId: id})
+            return res.json({Like})
+        }
+        catch (e)
+        {
+            next(ApiError.notFound(e))
+        }
     }
 
 
@@ -63,9 +78,7 @@ class PostController {
             let post = await Post.findOne({where: {...(id ? {id: +id} : {})}})
             if (!post) throw ApiError.notFound()
             return res.json(post)
-        }
-        catch (e)
-        {
+        } catch (e) {
             next(ApiError.notFound(e.message))
         }
     }
@@ -75,12 +88,11 @@ class PostController {
             const {id} = req.params
             let post = await Post.findOne({where: {...(id ? {id: +id} : {})}})
             if (post.image) fs.unlink(path.resolve(__dirname, '..', 'static', post.image), (err) => {
-                if (err) throw err})
+                if (err) throw err
+            })
             await post.destroy()
             return res.json({})
-        }
-        catch (e)
-        {
+        } catch (e) {
             next(ApiError.notFound(e.message))
         }
     }
