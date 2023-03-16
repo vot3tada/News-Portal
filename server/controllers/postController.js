@@ -1,8 +1,9 @@
-const {Post, PostTag,Like} = require('../models/models')
+const {Post, PostTag, Like, History, Tag} = require('../models/models')
 const ApiError = require('../error/ApiError')
 const path = require('path')
 const uuid = require('uuid')
 const fs = require('fs')
+const {where, Op} = require("sequelize");
 
 class PostController {
     async add(req, res, next) {
@@ -15,7 +16,7 @@ class PostController {
                 const post = await Post.create({title, content, image: filename})
                 return res.json(post)
             }
-            const post = await Post.create({title, content})
+            const post = await Post.create({title, content, userId: req.user.id})
             return res.json(post)
         } catch (e) {
             next(ApiError.badRequest(e.message))
@@ -47,13 +48,51 @@ class PostController {
         }
     }
 
+    // async getAll(req, res) {
+    //     const {tagId} = req.query
+    //     let posts = await Post.findAll({
+    //         include: [{model: PostTag, where: {...(tagId ? {tagId: +tagId} : {})},}]
+    //         //through: {attributes: []},
+    //         //attributes: []}]
+    //     })
+    //     return res.json(posts)
+    // }
+
     async getAll(req, res) {
-        const {tagId} = req.query
-        let posts = await Post.findAll({
-            include: [{model: PostTag, where: {...(tagId ? {tagId: +tagId} : {})},}]
-            //through: {attributes: []},
-            //attributes: []}]
+        //const history = await History.findAll({where: {userId: req.user.id}, limit: 50})
+
+        // const history = await History.findAll({
+        //     where: {userId: req.user.id},
+        //     limit: 50,
+        //     include: [Post]
+        // })
+        const interestingPosts = await Post.findAll({
+            include: {model: History, where: {userId: req.user.id}},
+            order: [['id', 'DESC']],
+            limit: 50
         })
+        // console.log(interestingPosts)
+        const tags = await Tag.findAll({
+            include: {
+                model: Post,
+                where: {id: {[Op.in]: interestingPosts.map(post => post.id)}}
+            }
+        });
+        // console.log(tags)
+        const posts = await Post.findAll({
+            include: {
+                model: Tag,
+                where: {id: {[Op.in]: tags.map(tag => tag.id)}},
+            },
+            order: [['id', 'DESC']]
+        })
+        console.log(posts)
+
+        // let posts = await Post.findAll({
+        //     include: [{model: PostTag, where: {...(tagId ? {tagId: +tagId} : {})}}]
+        //     //through: {attributes: []},
+        //     //attributes: []}]
+        // })
         return res.json(posts)
     }
 
@@ -61,11 +100,9 @@ class PostController {
         try {
             const {id} = req.params
             if (!id) throw ApiError.notFound()
-            await Like.create({ userId: req.user.id, postId: id})
+            await Like.create({userId: req.user.id, postId: id})
             return res.json({Like})
-        }
-        catch (e)
-        {
+        } catch (e) {
             next(ApiError.notFound(e))
         }
     }
