@@ -7,10 +7,10 @@ const isAdmin = require('../middleware/isAdminMiddleware')
 
 router.get('/', authMiddleware, postController.getAll)
 router.get('/:id', authMiddleware, postController.getOne)
-router.post('/', authMiddleware, isCreator, postController.add)
+router.post('/', authMiddleware, postController.add)
 router.post('/:id', authMiddleware, postController.likePost)
-router.put('/:id', authMiddleware, isCreator, postController.edit)
-router.delete('/:id', authMiddleware, isCreator, postController.delete)
+router.put('/:id', authMiddleware, postController.edit)
+router.delete('/:id', authMiddleware, postController.delete)
 
 
 module.exports = router

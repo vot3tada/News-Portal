@@ -8,8 +8,8 @@ class PostController {
     async add(req, res, next) {
         try {
             const {title, content} = req.body
-            const {image} = req.files
-            if (image) {
+            if (req.files) {
+                const {image} = req.files
                 let filename = uuid.v4() + ".jpg"
                 image.mv(path.resolve(__dirname, '..', 'static', filename))
                 const post = await Post.create({title, content, image: filename})
@@ -29,8 +29,8 @@ class PostController {
             let post = await Post.findOne({where: {...(id ? {id: +id} : {})}})
             post.title = title
             post.content = content
-            const {image} = req.files
-            if (image) {
+            if (req.files) {
+                const {image} = req.files
                 if (post.image) fs.unlink(path.resolve(__dirname, '..', 'static', post.image), (err) => {
                     if (err) throw err
                 })
