@@ -38,6 +38,13 @@ class UserController {
         const token = generateJwt(req.user.id, req.user.login, req.user.role)
         return res.json({token})
     }
+    async roleChanger(req, res, next) {
+        const {login, role} = req.body
+        const user = await User.findOne({where: {login}})
+        if (!user) return next(ApiError.internal('Пользователь не найден'))
+        user.role = role
+        user.save()
+    }
 }
 
 module.exports = new UserController()

@@ -60,9 +60,8 @@ class PostController {
     async likePost(req, res, next) {
         try {
             const {id} = req.params
-            const {userId} = req.body
-            if (!id || !userId) throw ApiError.notFound()
-            await Like.create({userId, postId: id})
+            if (!id) throw ApiError.notFound()
+            await Like.create({ userId: req.user.id, postId: id})
             return res.json({Like})
         }
         catch (e)
