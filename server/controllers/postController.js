@@ -48,37 +48,28 @@ class PostController {
         }
     }
 
-    // async getAll(req, res) {
-    //     const {tagId} = req.query
-    //     let posts = await Post.findAll({
-    //         include: [{model: PostTag, where: {...(tagId ? {tagId: +tagId} : {})},}]
-    //         //through: {attributes: []},
-    //         //attributes: []}]
-    //     })
-    //     return res.json(posts)
-    // }
-
     async getAll(req, res) {
-        //const history = await History.findAll({where: {userId: req.user.id}, limit: 50})
+        const {tagId} = req.query
+        let posts = await Post.findAll({
+            include: [{model: PostTag, where: {...(tagId ? {tagId: +tagId} : {})},}]
+            //through: {attributes: []},
+            //attributes: []}]
+        })
+        return res.json(posts)
+    }
 
-        // const history = await History.findAll({
-        //     where: {userId: req.user.id},
-        //     limit: 50,
-        //     include: [Post]
-        // })
+    async getSmartAll(req, res) {
         const interestingPosts = await Post.findAll({
             include: {model: History, where: {userId: req.user.id}},
             order: [['id', 'DESC']],
             limit: 50
         })
-        // console.log(interestingPosts)
         const tags = await Tag.findAll({
             include: {
                 model: Post,
                 where: {id: {[Op.in]: interestingPosts.map(post => post.id)}}
             }
         });
-        // console.log(tags)
         const posts = await Post.findAll({
             include: {
                 model: Tag,
@@ -87,12 +78,6 @@ class PostController {
             order: [['id', 'DESC']]
         })
         console.log(posts)
-
-        // let posts = await Post.findAll({
-        //     include: [{model: PostTag, where: {...(tagId ? {tagId: +tagId} : {})}}]
-        //     //through: {attributes: []},
-        //     //attributes: []}]
-        // })
         return res.json(posts)
     }
 
