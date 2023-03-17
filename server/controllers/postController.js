@@ -44,14 +44,15 @@ class PostController {
             await post.save()
             return res.json(post)
         } catch (e) {
-            next(ApiError.notFound(e.message))
+            next(e)
         }
     }
 
     async getAll(req, res) {
         const {tagId} = req.query
         let posts = await Post.findAll({
-            include: [{model: PostTag, where: {...(tagId ? {tagId: +tagId} : {})},}]
+            include: [{model: PostTag, where: {...(tagId ? {tagId: +tagId} : {})},}],
+            order: [['id', 'DESC']]
             //through: {attributes: []},
             //attributes: []}]
         })
@@ -81,14 +82,20 @@ class PostController {
         return res.json(posts)
     }
 
-    async likePost(req, res, next) {
+    async likeorUnlikePost(req, res, next) {
         try {
             const {id} = req.params
             if (!id) throw ApiError.notFound()
-            await Like.create({userId: req.user.id, postId: id})
-            return res.json({Like})
+            let like = await Like.findOne({userId: req.user.id, postId: id})
+            if (like)
+            {
+                like.destroy();
+                return res.json({statusLike: 'Deleted', like})
+            }
+            like = await Like.create({userId: req.user.id, postId: id})
+            return res.json({statusLike: 'Added', like})
         } catch (e) {
-            next(ApiError.notFound(e))
+            next(e)
         }
     }
 
@@ -100,7 +107,7 @@ class PostController {
             if (!post) throw ApiError.notFound()
             return res.json(post)
         } catch (e) {
-            next(ApiError.notFound(e.message))
+            next(e)
         }
     }
 
@@ -114,7 +121,7 @@ class PostController {
             await post.destroy()
             return res.json({})
         } catch (e) {
-            next(ApiError.notFound(e.message))
+            next(e)
         }
     }
 }

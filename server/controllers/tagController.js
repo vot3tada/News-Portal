@@ -22,7 +22,7 @@ class TagController {
         }
         catch (e)
         {
-            next(ApiError.notFound(e))
+            next(e)
         }
 
     }
