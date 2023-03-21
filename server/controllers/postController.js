@@ -56,6 +56,7 @@ class PostController {
             //through: {attributes: []},
             //attributes: []}]
         })
+        console.log(posts)
         return res.json(posts)
     }
 

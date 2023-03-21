@@ -38,7 +38,7 @@ Post.hasMany(History);
 History.belongsTo(User);
 History.belongsTo(Post);
 
-History.belongsToMany(PostTag, {through: Post})
+History.belongsToMany(PostTag, {through: Post});
 User.hasMany(History);
 Post.hasMany(History);
 
@@ -49,8 +49,7 @@ Like.belongsTo(Post);
 
 
 Post.hasMany(PostTag);
-
-Tag.hasMany(PostTag)
+Tag.hasMany(PostTag);
 
 
 Post.belongsToMany(Tag, {through: PostTag});

@@ -6,7 +6,7 @@ const {where} = require('sequelize')
 
 const generateJwt = (id, login, role) => {
     return jwt.sign({id, login, role},
-        'SecretKey12345',
+        process.env.SECRET_KEY,
         {expiresIn: '24h'})
 }
 
