@@ -1,12 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import axios from "axios";
-import {server} from '../env'
-import {POSTS_ROUTE} from "../utils/consts";
+import React, {useState, useEffect} from 'react';
+import {posts as GetPosts} from "../http/postApi";
+import {image as GetImage} from "../http/imageApi";
+import {$host} from "../http";
 
 const Posts = () => {
     const [posts, setPosts] = useState([]);
+    GetPosts().then((res) => {
+        setPosts(res)});
 
-    useEffect(() => {
+
+
+
+
+    /*    useEffect(() => {
         axios
             .get(server + POSTS_ROUTE, {
                 headers: {
@@ -19,15 +25,21 @@ const Posts = () => {
             .catch((err) => {
                 console.log(err)
             });
-    }, []);
+    }, []);*/
 
-    return (posts.map(({title, content}) => (
-        <div>
+    return (posts.map(({id, title, content,image, userId}) => (
+        <div key = {id}>
             <h1>{title}</h1>
             <p>{content}</p>
+            {
+                image? <img src={'http://localhost:5000/'+image}/> :''
+            }
+
         </div>
 
     )));
 };
 
 export default Posts;
+
+

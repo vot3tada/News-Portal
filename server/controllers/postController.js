@@ -13,7 +13,7 @@ class PostController {
                 const {image} = req.files
                 let filename = uuid.v4() + ".jpg"
                 image.mv(path.resolve(__dirname, '..', 'static', filename))
-                const post = await Post.create({title, content, image: filename})
+                const post = await Post.create({title, content, image: filename, userId: req.user.id})
                 return res.json(post)
             }
             const post = await Post.create({title, content, userId: req.user.id})
@@ -28,6 +28,7 @@ class PostController {
             const {id} = req.params
             const {title, content} = req.body
             let post = await Post.findOne({where: {...(id ? {id: +id} : {})}})
+            if (post.userId != req.user.id) throw ApiError(403, 'Нет доступа')
             post.title = title
             post.content = content
             if (req.files) {
@@ -38,8 +39,6 @@ class PostController {
                 let filename = uuid.v4() + ".jpg"
                 image.mv(path.resolve(__dirname, '..', 'static', filename))
                 post.image = filename
-                await post.save()
-                return res.json(post)
             }
             await post.save()
             return res.json(post)
@@ -88,8 +87,7 @@ class PostController {
             const {id} = req.params
             if (!id) throw ApiError.notFound()
             let like = await Like.findOne({userId: req.user.id, postId: id})
-            if (like)
-            {
+            if (like) {
                 like.destroy();
                 return res.json({statusLike: 'Deleted', like})
             }
@@ -116,6 +114,7 @@ class PostController {
         try {
             const {id} = req.params
             let post = await Post.findOne({where: {...(id ? {id: +id} : {})}})
+            if (post.userId != req.user.id) throw ApiError(403, 'Нет доступа')
             if (post.image) fs.unlink(path.resolve(__dirname, '..', 'static', post.image), (err) => {
                 if (err) throw err
             })

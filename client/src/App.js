@@ -1,18 +1,16 @@
 import React, {useContext, useEffect, useState} from 'react';
 import AppRouter from "./components/AppRouter";
 import {BrowserRouter} from "react-router-dom";
-//require('dotenv').config()
+import Navbar from "./components/Navbar";
 
-const Main = () => <h1>Hello world</h1>;
 
-function App() {
-  return (
-
-      <BrowserRouter>
-          <Main/>
-          <AppRouter/>
-      </BrowserRouter>
-  );
+const App = () => {
+    return (
+        <BrowserRouter>
+            <Navbar/>
+            <AppRouter/>
+        </BrowserRouter>
+    );
 }
 
 export default App;
