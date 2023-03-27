@@ -5,7 +5,7 @@ import {
     LOGIN_ROUTE,
     REGISTRATION_ROUTE,
     CREATE_POST_ROUTE,
-    LOGOUT_ROUTE
+    LOGOUT_ROUTE, NOTFOUND_ROUTE, SMART_POSTS_ROUTE
 } from "./utils/consts";
 import Admin from "./pages/Admin";
 import Posts from "./pages/Posts";
@@ -14,8 +14,9 @@ import Auth from "./pages/Auth";
 import CreatePost from "./pages/CreatePost";
 import {logout} from "./http/userAPI";
 import Logout from "./pages/Logout";
+import NotFound from "./components/NotFound";
 
-export const authRoutes = [
+export const privateRoutes = [
     {
         path: ADMIN_ROUTE,
         Component: Admin
@@ -23,6 +24,10 @@ export const authRoutes = [
     {
         path: CREATE_POST_ROUTE,
         Component: CreatePost
+    },
+    {
+        path: SMART_POSTS_ROUTE,
+        Component: Posts
     }
 ]
 
@@ -32,7 +37,7 @@ export const publicRoutes = [
         Component: Posts
     },
     {
-        path: POST_ROUTE + '/:id',
+        path: POST_ROUTE,
         Component: Post
     },
     {
@@ -46,5 +51,9 @@ export const publicRoutes = [
     {
         path: LOGOUT_ROUTE,
         Component: Logout
+    },
+    {
+        path: NOTFOUND_ROUTE,
+        Component: NotFound
     },
 ]

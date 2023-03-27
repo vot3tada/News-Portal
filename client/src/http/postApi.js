@@ -1,8 +1,8 @@
 import {$authHost, $host} from "./index";
 
 
-export const posts = async (tagId) => {
-    const {data} = await $host.get('post/', {...(tagId ? {tagId: +tagId} : {})});
+export const posts = async ({tagId, page}) => {
+    const {data} = await $host.get('post/', {...(tagId ? {tagId: +tagId} : {}), page});
     return data;
 }
 export const post = async (id) => {

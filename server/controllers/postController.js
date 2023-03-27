@@ -48,18 +48,26 @@ class PostController {
     }
 
     async getAll(req, res) {
-        const {tagId} = req.query
+        let {tagId, limit, page} = req.query
+        page = page || 1
+        limit = limit || 25
+        let offset = page * limit - limit
         let posts = await Post.findAll({
-            include: [{model: PostTag, where: {...(tagId ? {tagId: +tagId} : {})},}],
-            order: [['id', 'DESC']]
+            include: [{model: PostTag, where: {...(tagId ? {tagId: +tagId} : {})}}],
+            order: [['id', 'DESC']],
+            limit,
+            offset
             //through: {attributes: []},
             //attributes: []}]
         })
-        console.log(posts)
         return res.json(posts)
     }
 
     async getSmartAll(req, res) {
+        let {limit, page} = req.query
+        page = page || 1
+        limit = limit || 25
+        let offset = page * limit - limit
         const interestingPosts = await Post.findAll({
             include: {model: History, where: {userId: req.user.id}},
             order: [['id', 'DESC']],
@@ -76,9 +84,10 @@ class PostController {
                 model: Tag,
                 where: {id: {[Op.in]: tags.map(tag => tag.id)}},
             },
-            order: [['id', 'DESC']]
+            order: [['id', 'DESC']],
+            limit,
+            offset
         })
-        console.log(posts)
         return res.json(posts)
     }
 

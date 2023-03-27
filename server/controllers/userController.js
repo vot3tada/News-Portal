@@ -71,9 +71,20 @@ class UserController {
     }
 
     async saveHistory(req, res, next) {
-        const {id} = req.params
-        await History.create({userId: req.user.id, postId: id})
-        next()
+        {
+            if (!req.user)
+            {
+                next()
+                return
+            }
+            try {
+                const {id} = req.params
+                await History.create({userId: req.user.id, postId: id})
+                next()
+            } catch (e) {
+                next(e)
+            }
+        }
     }
 }
 

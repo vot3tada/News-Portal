@@ -7,7 +7,7 @@ const isAdmin = require('../middleware/isAdminMiddleware')
 
 router.post('/', authMiddleware, isCreator, tagController.add)
 router.post('/link', authMiddleware, isCreator, tagController.linkPostToTag)
-router.get('/', authMiddleware, tagController.getAll)
+router.get('/', tagController.getAll)
 
 
 module.exports = router

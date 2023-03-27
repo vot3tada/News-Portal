@@ -1,20 +1,23 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Form, Link, redirect, useLocation, useNavigate} from "react-router-dom";
 import {LOGIN_ROUTE, POSTS_ROUTE, REGISTRATION_ROUTE} from "../utils/consts";
 import {login as Login, registration as Registration} from "../http/userAPI";
+import {UserContext} from "../AppProviders/UserProvider";
 
 
 
 
 const Auth = () => {
-
-    if (localStorage.getItem('token')) window.location.href = POSTS_ROUTE;
+    const navigate = useNavigate();
+    useEffect( () => {
+        if (localStorage.getItem('token')) return navigate(POSTS_ROUTE);
+    }, [])
     const isLogin = useLocation().pathname === LOGIN_ROUTE;
     const [name, setName] = useState('');
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [res, setRes] = useState('');
-    const navigate = useNavigate();
+    const {user, setUser} = useContext(UserContext);
 
 
 
@@ -23,6 +26,7 @@ const Auth = () => {
         let data;
         if (isLogin) {
             data = await Login(login, password).catch(err => {
+                console.log(err.response.data.message)
                 setRes(err.response.data.message)
             });
         } else {
@@ -30,7 +34,10 @@ const Auth = () => {
                 setRes(err.response.data.message)
             });
         }
-        if (data) return navigate(POSTS_ROUTE);
+        if (data) {
+            setUser(data);
+            return navigate(POSTS_ROUTE);
+        }
     }
 
     return (
