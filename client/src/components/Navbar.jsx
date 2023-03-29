@@ -1,8 +1,7 @@
 import React, {useContext} from 'react';
 import {NavLink} from "react-router-dom";
-import {LOGOUT_ROUTE, POSTS_ROUTE} from "../utils/consts";
+import {LOGIN_ROUTE, LOGOUT_ROUTE, POSTS_ROUTE, REGISTRATION_ROUTE} from "../utils/consts";
 import {UserContext} from "../AppProviders/UserProvider";
-
 
 const Navbar = () => {
     const {user} = useContext(UserContext);
@@ -12,10 +11,21 @@ const Navbar = () => {
                 Новости
             </NavLink>
             {
-                user &&
-                <NavLink to={LOGOUT_ROUTE}>
-                    Выйти
-                </NavLink>
+                user ?
+                    <div>
+                        <NavLink to={LOGOUT_ROUTE}>
+                            Выйти
+                        </NavLink>
+                    </div>
+                    :
+                    <div>
+                        <NavLink to={LOGIN_ROUTE}>
+                            Войти
+                        </NavLink>
+                        <NavLink to={REGISTRATION_ROUTE}>
+                            Регистрация
+                        </NavLink>
+                    </div>
             }
         </div>
     );
