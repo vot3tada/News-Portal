@@ -8,7 +8,7 @@ const isAdmin = require('../middleware/isAdminMiddleware')
 
 router.get('/', postController.getAll)
 router.get('/smart', authMiddleware, postController.getSmartAll)
-router.get('/:id', userController.saveHistory, postController.getOne)
+router.get('/:id', authMiddleware, userController.saveHistory, postController.getOne)
 router.post('/', authMiddleware, isCreator, postController.add)
 router.post('/:id', authMiddleware, postController.likeorUnlikePost)
 router.put('/:id', authMiddleware, isCreator, postController.edit)

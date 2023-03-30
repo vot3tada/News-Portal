@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {NavLink} from "react-router-dom";
-import {LOGIN_ROUTE, LOGOUT_ROUTE, POSTS_ROUTE, REGISTRATION_ROUTE} from "../utils/consts";
+import {LOGIN_ROUTE, LOGOUT_ROUTE, POSTS_ROUTE, REGISTRATION_ROUTE, CREATE_POST_ROUTE} from "../utils/consts";
 import {UserContext} from "../AppProviders/UserProvider";
 
 const Navbar = () => {
@@ -10,6 +10,11 @@ const Navbar = () => {
             <NavLink to={POSTS_ROUTE}>
                 Новости
             </NavLink>
+            {(user?.role === 'ADMIN' || user?.role === 'CREATOR') &&
+            <NavLink to={CREATE_POST_ROUTE}>
+                Добавить новость
+            </NavLink>
+            }
             {
                 user ?
                     <div>

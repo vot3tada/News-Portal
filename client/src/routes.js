@@ -26,6 +26,10 @@ export const privateRoutes = [
         Component: CreatePost
     },
     {
+        path: POST_ROUTE,
+        Component: Post
+    },
+    {
         path: SMART_POSTS_ROUTE,
         Component: Posts
     }
@@ -35,10 +39,6 @@ export const publicRoutes = [
     {
         path: POSTS_ROUTE,
         Component: Posts
-    },
-    {
-        path: POST_ROUTE,
-        Component: Post
     },
     {
         path: LOGIN_ROUTE,
