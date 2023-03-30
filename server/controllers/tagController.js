@@ -15,7 +15,7 @@ class TagController {
 
     async linkPostToTag(req, res, next) {
         try {
-            const {tagId,postId} = req.query
+            const {tagId,postId} = req.body
             if (!tagId || !postId) throw ApiError.notFound()
             const linked = await PostTag.create({tagId, postId})
             return res.json(linked)
