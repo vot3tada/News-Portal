@@ -10,3 +10,10 @@ export const post = async (id) => {
     return data
 }
 
+export const createPost = async (formdata) => {
+    const {data} = await $host.post('post/', formdata, {headers: { // formdata include title, content, image
+            "Content-Type": "multipart/form-data",
+        }});
+    return data;
+}
+
