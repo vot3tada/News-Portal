@@ -2,7 +2,10 @@ import {$authHost, $host} from "./index";
 
 
 export const posts = async ({tagId, page}) => {
-    const {data} = await $host.get('post/', {...(tagId ? {tagId: +tagId} : {}), page});
+    const {data} = await $host.get('post/', {headers: {
+        "page" : page,
+        "tagId" : tagId,
+    }});
     return data;
 }
 export const post = async (id) => {

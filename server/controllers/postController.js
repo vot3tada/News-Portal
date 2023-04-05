@@ -47,20 +47,27 @@ class PostController {
         }
     }
 
-    async getAll(req, res) {
-        let {tagId, limit, page} = req.query
-        page = page || 1
-        limit = limit || 25
-        let offset = page * limit - limit
-        let posts = await Post.findAll({
-            include: [{model: PostTag, where: {...(tagId ? {tagId: +tagId} : {})}}],
-            order: [['id', 'DESC']],
-            limit,
-            offset
-            //through: {attributes: []},
-            //attributes: []}]
-        })
-        return res.json(posts)
+    async getAll(req, res, next) {
+        try {
+            let {tagId, limit, page} = req.headers
+            console.log(page,tagId)
+            page = page || 1
+            limit = limit || 25
+            let offset = page * limit - limit
+            let posts = await Post.findAll({
+                include: [{model: PostTag, where: {...(tagId ? {tagId: +tagId} : {})}}],
+                order: [['id', 'DESC']],
+                limit,
+                offset
+                //through: {attributes: []},
+                //attributes: []}]
+            })
+            return res.json(posts)
+        }
+        catch (e)
+        {
+            next(e);
+        }
     }
 
     async getSmartAll(req, res) {
