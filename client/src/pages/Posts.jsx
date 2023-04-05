@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {post as GetPost, posts as GetPosts} from "../http/postApi";
 import {image as GetImage} from "../http/imageApi";
 import {$host} from "../http";
+import PostCard from "../components/PostCard";
 
 const Posts = () => {
     const [posts, setPosts] = useState([]);
@@ -33,14 +34,7 @@ const Posts = () => {
     return (
         <div>
             {posts.map(({id, title, content, image, userId}) => (
-                <div key={id}>
-                    <h1>{title}</h1>
-                    <p>{content}</p>
-                    {
-                        image ? <img src={'http://localhost:5000/' + image}/> : ''
-                    }
-
-                </div>
+                <PostCard id={id} title={title} content={content} image={image}/>
             ))}
             {posts &&
                 <div style={{height: 20}} ref={lastElement}></div>}

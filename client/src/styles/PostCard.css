@@ -1,0 +1,14 @@
+.contentText{
+    overflow: hidden; /* Обрезаем все, что не помещается в область */
+    text-overflow: ellipsis;
+}
+.Card{
+    display: flex;
+    justify-content: center;
+}
+.CardButton{
+    display: flex;
+    justify-content: end;
+    margin-bottom: 25px;
+    margin-right: 15px;
+}
