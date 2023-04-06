@@ -1,0 +1,10 @@
+.authBody{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.centerCard{
+    display: flex;
+    justify-content: center;
+    margin-top: 15%;
+}

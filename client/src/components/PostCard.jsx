@@ -3,8 +3,11 @@ import '../styles/PostCard.css'
 import {Button, Card} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {POSTS_ROUTE} from "../utils/consts";
+import {useContext} from "react";
+import {UserContext} from "../AppProviders/UserProvider";
 
 const PostCard = (props) => {
+    const {user, setUser} = useContext(UserContext);
     return (
         <div className={'Card'}>
             <Card style={{width: '35rem'}} key={props.id}>
@@ -13,12 +16,14 @@ const PostCard = (props) => {
                     {props.image &&
                         <Card.Img variant="top" src={'http://localhost:5000/' + props.image}/>}
                     <Card.Text>
-                        <p className={'contentText'}>{props.content.substring(0, 200)+'...'}</p>
+                        <p className={'contentText'}>{props.content.substring(0, 200) + '...'}</p>
                     </Card.Text>
                 </Card.Body>
-                <Link to={POSTS_ROUTE + '/' + props.id} className={'CardButton'}>
-                    <Button variant="primary" size="lg">Прочитать полностью</Button>
-                </Link>
+                {user &&
+                    <Link to={POSTS_ROUTE + '/' + props.id} className={'CardButton'}>
+                        <Button variant="primary" size="lg">Прочитать полностью</Button>
+                    </Link>
+                }
             </Card>
         </div>
     );

@@ -12,3 +12,17 @@
     margin-bottom: 25px;
     margin-right: 15px;
 }
+.head{
+    display: flex;
+    justify-content: end;
+    margin: 5px;
+}
+.centerCreateCard{
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+}
+.headButtons{
+    display: flex;
+    height: 40px;
+}

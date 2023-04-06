@@ -47,10 +47,31 @@ class PostController {
         }
     }
 
+
+    async getOwn(req, res, next) {
+        try {
+            let {limit, page} = req.headers
+            page = page || 1
+            limit = limit || 25
+            let offset = page * limit - limit
+            let posts = await Post.findAll({
+                where: {userId: req.user.id},
+                order: [['id', 'DESC']],
+                limit,
+                offset
+                //through: {attributes: []},
+                //attributes: []}]
+            })
+            return res.json(posts)
+        }
+        catch (e)
+        {
+            next(e);
+        }
+    }
     async getAll(req, res, next) {
         try {
             let {tagId, limit, page} = req.headers
-            console.log(page,tagId)
             page = page || 1
             limit = limit || 25
             let offset = page * limit - limit
@@ -71,14 +92,14 @@ class PostController {
     }
 
     async getSmartAll(req, res) {
-        let {limit, page} = req.query
+        let {tagId, limit, page} = req.headers
         page = page || 1
         limit = limit || 25
         let offset = page * limit - limit
         const interestingPosts = await Post.findAll({
             include: {model: History, where: {userId: req.user.id}},
             order: [['id', 'DESC']],
-            limit: 50
+            limit: 10
         })
         const tags = await Tag.findAll({
             include: {

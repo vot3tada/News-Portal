@@ -1,8 +1,8 @@
-import {useState, useEffect, useRef} from 'react';
-import {posts as GetPosts} from "../http/postApi";
+import React, {useState, useEffect, useRef} from 'react';
+import {smartPosts as GetSmartPosts} from "../http/postApi";
 import PostCard from "../components/PostCard";
 
-const Posts = () => {
+const SmartPosts = () => {
     const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(1);
     const [isLoad, setLoad] = useState(false);
@@ -10,18 +10,18 @@ const Posts = () => {
     const observer = useRef();
     const [end, setEnd] = useState(false);
     useEffect(() => {
-        GetPosts({page: page}).then((res) => {
+        GetSmartPosts({page: page}).then((res) => {
             setPosts(prev => [...prev, ...res]);
             if (res.length == 0) setEnd(true);
-        setLoad(!isLoad);
+            setLoad(!isLoad);
         });
     }, [page])
 
-    useEffect( () => {
+    useEffect(() => {
         if (end) return
         if (observer.current) observer.current.disconnect();
         let callback = function (entries, observer) {
-            if(entries[0].isIntersecting) {
+            if (entries[0].isIntersecting) {
                 setPage(page + 1);
             }
         };
@@ -39,6 +39,4 @@ const Posts = () => {
     );
 };
 
-export default Posts;
-
-
+export default SmartPosts;

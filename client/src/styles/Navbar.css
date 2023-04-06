@@ -1,0 +1,15 @@
+.Navbar{
+    background: lavenderblush;
+    display: flex;
+    justify-content: space-around;
+}
+.buttonLink{
+    margin-left: 10px;
+    margin-right: 10px;
+    text-decoration: none;
+    font-size: 25px;
+    font-family: "Arial Black";
+}
+.navbarMargin{
+    margin: 20px;
+}

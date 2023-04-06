@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {createPost} from "../http/postApi";
 import {linkTagToPost, tags as getTags} from "../http/tagApi";
+import {Card, Form, Button} from "react-bootstrap";
+import '../styles/createPostCard.css'
 
 const CreatePost = () => {
     const [title, setTitle] = useState('')
@@ -22,35 +24,42 @@ const CreatePost = () => {
         formData.append('content', content);
         formData.append('image', image);
         const post = await createPost(formData).catch(err => {
-            console.log(err)});
-        const data = await linkTagToPost(tag,post.id).catch(err => {
-            console.log(err)});
+            console.log(err)
+        });
+        const data = await linkTagToPost(tag, post.id).catch(err => {
+            console.log(err)
+        });
     }
 
     return (
-        <div>
-            <input
-                type={'input'}
-                placeholder={'Название'}
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-            />
-            <input
-                type={'input'}
-                placeholder={'Текст поста'}
-                value={content}
-                onChange={e => setContent(e.target.value)}
-            />
-            <input
-                type={'file'}
-                onChange={e => setImage(e.target.files[0])}
-            />
-            <select name={'Категории'}  onChange={e => setTag(e.target.value)}>
-                {tags.map(({id, name}) => (
-                    <option key={id} value={id}>{name}</option>
-                ))}
-            </select>
-            <button onClick={Create}>Добавить новый пост</button>
+        <div className={'centerCreateCard'}>
+            <Card style={{width: '35rem'}}>
+                <Card.Body className={'Center'} style={{flexDirection: 'column'}}>
+                    <Form.Control className={'marginAll'}
+                        type={'input'}
+                        placeholder={'Название'}
+                        value={title}
+                        onChange={e => setTitle(e.target.value)}
+                    />
+                    <Form.Control className={'marginAll'}
+                        as="textarea"
+                        placeholder="Текст поста"
+                        value={content}
+                        style={{height: '400px'}}
+                        onChange={e => setContent(e.target.value)}
+                    />
+                    <Form.Control accept="image/*" className={'marginAll'}
+                        type={'file'}
+                        onChange={e => setImage(e.target.files[0])}
+                    />
+                    <Form.Select name={'Категории'} onChange={e => setTag(e.target.value)} className={'marginAll'}>
+                        {tags.map(({id, name}) => (
+                            <option key={id} value={id}>{name}</option>
+                        ))}
+                    </Form.Select>
+                    <Button className={'marginAll'} onClick={Create}>Добавить новый пост</Button>
+                </Card.Body>
+            </Card>
         </div>
     );
 };

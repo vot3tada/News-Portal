@@ -1,13 +1,12 @@
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
 import {LOGIN_ROUTE} from "../utils/consts";
 
 const $host = axios.create({
-    baseURL: 'http://localhost:5000'
+    baseURL: 'http://localhost:5000/'
 })
 
 const $authHost = axios.create({
-    baseURL: 'http://localhost:5000'
+    baseURL: 'http://localhost:5000/'
 })
 
 const authInterceptor = config => {

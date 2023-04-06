@@ -10,8 +10,8 @@ const User = sequelize.define('users', {
 })
 const Post = sequelize.define('posts', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    title: {type: DataTypes.STRING},
-    content: {type: DataTypes.STRING},
+    title: {type: DataTypes.TEXT('long')},
+    content: {type: DataTypes.TEXT},
     image: {type: DataTypes.STRING, allowNull: true},
     createdAt: {type: DataTypes.DATE, defaultValue: sequelize.literal('CURRENT_TIMESTAMP')},
 })

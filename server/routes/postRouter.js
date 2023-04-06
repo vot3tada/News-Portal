@@ -7,6 +7,7 @@ const isCreator = require('../middleware/isCreatorMiddleware')
 const isAdmin = require('../middleware/isAdminMiddleware')
 
 router.get('/', postController.getAll)
+router.get('/my', authMiddleware, postController.getOwn),
 router.get('/smart', authMiddleware, postController.getSmartAll)
 router.get('/:id', authMiddleware, userController.saveHistory, postController.getOne)
 router.post('/', authMiddleware, isCreator, postController.add)
