@@ -43,39 +43,42 @@ const Auth = () => {
         <div className={'centerCard'}>
             <Card style={{width: '20rem'}}>
                 <Card.Body className={'authBody'}>
-                        <Card.Title className={'Center'}>{isLogin ? 'Вход' : 'Регистрация'}</Card.Title>
-                        {!isLogin &&
-                            <Form.Control
-                                type={'input'}
-                                placeholder={'Имя'}
-                                value={name}
-                                onChange={e => setName(e.target.value)}
-                            />
-                        }
+                    <Card.Title className={'Center'}>{isLogin ? 'Вход' : 'Регистрация'}</Card.Title>
+                    {!isLogin &&
                         <Form.Control
+                            className={'marginBottom'}
                             type={'input'}
-                            placeholder={'Логин'}
-                            value={login}
-                            onChange={e => setLogin(e.target.value)}
+                            placeholder={'Имя'}
+                            value={name}
+                            onChange={e => setName(e.target.value)}
                         />
-                        <Form.Control
-                            type={'password'}
-                            placeholder={'Пароль'}
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                        />
-
-                        {isLogin ?
-                            <div className={'Center'}>
-                                Нет аккаунта? <Link to={REGISTRATION_ROUTE}>Зарегистрируйся!</Link>
-                            </div>
-                            :
-                            <div className={'Center'}>
-                                Есть аккаунт? <Link to={LOGIN_ROUTE}>Войдите!</Link>
-                            </div>
-                        }
-                        <Card.Subtitle style={{height: '20px'}} className={'Center mb-2 text-muted'}>{res}</Card.Subtitle>
-                        <Button onClick={singIn}>{isLogin ? 'Вход' : 'Регистрация'}</Button>
+                    }
+                    <Form.Control
+                        className={'marginBottom'}
+                        type={'input'}
+                        placeholder={'Логин'}
+                        value={login}
+                        onChange={e => setLogin(e.target.value)}
+                    />
+                    <Form.Control
+                        className={'marginBottom'}
+                        type={'password'}
+                        placeholder={'Пароль'}
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                    />
+                    {isLogin ?
+                        <div className={'Center marginBottom'}>
+                            Нет аккаунта? <Link style={{marginLeft: '5px'}}
+                                                to={REGISTRATION_ROUTE}>Зарегистрируйся!</Link>
+                        </div>
+                        :
+                        <div className={'Center marginBottom'}>
+                            Есть аккаунт? <Link style={{marginLeft: '5px'}} onClick={() => setRes('')} to={LOGIN_ROUTE}>Войдите!</Link>
+                        </div>
+                    }
+                    <Button className={'marginBottom'} onClick={singIn}>{isLogin ? 'Вход' : 'Регистрация'}</Button>
+                    <Card.Subtitle style={{height: '10px'}} className={'Center mb-2 text-muted'}>{res}</Card.Subtitle>
                 </Card.Body>
             </Card>
         </div>

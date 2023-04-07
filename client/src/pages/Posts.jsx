@@ -1,6 +1,7 @@
 import {useState, useEffect, useRef} from 'react';
 import {posts as GetPosts} from "../http/postApi";
 import PostCard from "../components/PostCard";
+import {Container} from "react-bootstrap";
 
 const Posts = () => {
     const [posts, setPosts] = useState([]);
@@ -29,13 +30,13 @@ const Posts = () => {
         observer.current.observe(lastElement.current);
     }, [isLoad])
     return (
-        <div>
+        <Container>
             {posts.map(({id, title, content, image, userId}) => (
                 <PostCard id={id} title={title} content={content} image={image}/>
             ))}
             {posts &&
                 <div style={{height: 20}} ref={lastElement}></div>}
-        </div>
+        </Container>
     );
 };
 

@@ -3,6 +3,8 @@ import {createPost} from "../http/postApi";
 import {linkTagToPost, tags as getTags} from "../http/tagApi";
 import {Card, Form, Button} from "react-bootstrap";
 import '../styles/createPostCard.css'
+import {useNavigate} from "react-router-dom";
+import {MY_POSTS_ROUTE} from "../utils/consts";
 
 const CreatePost = () => {
     const [title, setTitle] = useState('')
@@ -10,6 +12,7 @@ const CreatePost = () => {
     const [image, setImage] = useState(null)
     const [tag, setTag] = useState(2)
     const [tags, setTags] = useState([])
+    const navigate = useNavigate()
 
     useEffect(() => {
         getTags().then((res) => {
@@ -29,6 +32,7 @@ const CreatePost = () => {
         const data = await linkTagToPost(tag, post.id).catch(err => {
             console.log(err)
         });
+        navigate(MY_POSTS_ROUTE)
     }
 
     return (

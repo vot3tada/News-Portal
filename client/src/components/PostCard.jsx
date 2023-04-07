@@ -1,43 +1,51 @@
 import '../styles/PostCard.css'
 
-import {Button, Card} from "react-bootstrap";
+import {Button, Card, Container, Row, Col, Form} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {POSTS_ROUTE} from "../utils/consts";
-import {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import {UserContext} from "../AppProviders/UserProvider";
+import ModalPostCard from "./ModalPostCard";
+import {post as GetPost} from "../http/postApi";
+
 
 const PostCard = (props) => {
     const {user, setUser} = useContext(UserContext);
+    const [modalShow, setModalShow] = React.useState(false);
+    const ShowModal = () => {
+            setModalShow(true);
+            GetPost(props.id).then();
+        }
     return (
-        <div className={'Card'}>
-            <Card style={{width: '35rem'}} key={props.id}>
-                <Card.Body>
-                    <Card.Title>{props.title}</Card.Title>
-                    {props.image &&
-                        <Card.Img variant="top" src={'http://localhost:5000/' + props.image}/>}
-                    <Card.Text>
-                        <p className={'contentText'}>{props.content.substring(0, 200) + '...'}</p>
-                    </Card.Text>
-                </Card.Body>
-                {user &&
-                    <Link to={POSTS_ROUTE + '/' + props.id} className={'CardButton'}>
-                        <Button variant="primary" size="lg">Прочитать полностью</Button>
-                    </Link>
-                }
-            </Card>
+        <div key={props.id} style={{paddingTop:'10px'}}>
+            <Container>
+                <Card onClick={ShowModal}>
+                    <Card.Body>
+                        <Row>
+                            {props.image &&
+                                <Col xl={'5'}>
+                                    <Card.Img src={'http://localhost:5000/' + props.image}/>
+                                </Col>
+                            }
+                            <Col xl={'7'}>
+                                <Card.Title>{props.title}</Card.Title>
+                                <Card.Text className={'cardText'}>
+                                    {props.content}
+                                </Card.Text>
+                            </Col>
+                        </Row>
+                    </Card.Body>
+                </Card>
+            </Container>
+            <ModalPostCard
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                id={props.id}
+                title={props.title}
+                content={props.content}
+                image={props.image}
+            />
         </div>
     );
 };
-// <div key={props.id}>
-//     <p className={'title'}>{props.title}</p>
-//     <div className={'content'}>
-//         <p className={'contentText'}>{props.content}</p>
-//     </div>
-//     {
-//         props.image &&
-//         <div className={'image'}>
-//             <img src={'http://localhost:5000/' + props.image}/>
-//         </div>
-//     }
-// </div>
 export default PostCard;

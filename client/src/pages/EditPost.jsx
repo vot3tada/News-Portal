@@ -6,7 +6,7 @@ import {Card, Form, Button} from "react-bootstrap";
 import '../styles/createPostCard.css'
 import {useNavigate, useParams} from "react-router-dom";
 import NotFound from "../components/NotFound";
-import {POSTS_ROUTE} from "../utils/consts";
+import {MY_POSTS_ROUTE, POSTS_ROUTE} from "../utils/consts";
 
 const EditPost = () => {
     const {id} = useParams();
@@ -34,7 +34,7 @@ const EditPost = () => {
         formData.append('image', image);
         const post = await editPost(formData, id).then(e => {
             setResult('Отредактировано успешно')
-            navigate(POSTS_ROUTE + '/' + id)
+            navigate(MY_POSTS_ROUTE)
         }).catch(err => {
             setResult(err)
             console.log(err)

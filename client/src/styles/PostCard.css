@@ -26,3 +26,9 @@
     display: flex;
     height: 40px;
 }
+.cardText {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 10;
+    -webkit-box-orient: vertical;
+}

@@ -1,14 +1,16 @@
-.Navbar{
-    background: lavenderblush;
-    display: flex;
-    justify-content: space-around;
-}
-.buttonLink{
+
+.Brand{
     margin-left: 10px;
     margin-right: 10px;
     text-decoration: none;
     font-size: 25px;
     font-family: "Arial Black";
+}
+.Link{
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 15px;
+    text-decoration: none;
 }
 .navbarMargin{
     margin: 20px;

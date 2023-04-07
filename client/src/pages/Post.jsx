@@ -25,7 +25,6 @@ const Post = () => {
 
     let DeletePost = () =>
     {
-        console.log(id);
         deletePost(id).then();
         navigate(POSTS_ROUTE);
     }
