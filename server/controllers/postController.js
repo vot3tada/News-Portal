@@ -157,7 +157,10 @@ class PostController {
     async getOne(req, res, next) {
         try {
             const {id} = req.params
-            let post = await Post.findOne({where: {...(id ? {id: +id} : {})}})
+            let post = await Post.findOne({
+                include: [{model: PostTag}],
+                where: {...(id ? {id: +id} : {})}
+            })
             if (!post) throw ApiError.notFound()
             return res.json(post)
         } catch (e) {

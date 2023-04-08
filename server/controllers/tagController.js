@@ -49,9 +49,21 @@ class TagController {
         try {
             const {tagId, postId} = req.body
             if (!tagId || !postId) throw ApiError.notFound()
-            const linked = await PostTag.findOne({where: {tagId: tagId, postId: postId}})
-            linked.destroy()
+            const linked = await PostTag.findAll({where: {postId: postId}})
+            linked.map(async link => (await link.destroy()))
             return res.json({status: 'unlinked'})
+        } catch (e) {
+            next(e)
+        }
+    }
+    async changeLink(req, res, next) {
+        try {
+            const {tagId, postId} = req.body
+            if (!tagId || !postId) throw ApiError.notFound()
+            const linked = await PostTag.findAll({where: {postId: postId}})
+            linked.map(async link => (await link.destroy()))
+            const newLink = await PostTag.create({tagId, postId})
+            return res.json(newLink)
         } catch (e) {
             next(e)
         }

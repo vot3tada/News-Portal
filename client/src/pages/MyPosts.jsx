@@ -17,10 +17,6 @@ const MyPosts = () => {
         });
     }, []);
 
-    const deletePostFromList = (id) => {
-        setPosts(posts.filter(post => post.id !== id));
-    }
-
     useEffect(() => {
         GetPosts({page: page}).then((res) => {
             setPosts(prev => [...prev, ...res]);

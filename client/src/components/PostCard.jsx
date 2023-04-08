@@ -14,6 +14,8 @@ const PostCard = (props) => {
     const [modalShow, setModalShow] = React.useState(false);
     const [userLike, setUserLike] = useState(false);
     const [likes, setLikes] = useState([])
+    const [visible, setVisible] = useState(true);
+
     useEffect(() => {
         getLike(props.id).then(res => {
             setLikes(res)
@@ -33,7 +35,7 @@ const PostCard = (props) => {
         GetPost(props.id).then();
     }
     return (
-        <div key={props.id} style={{paddingTop: '10px'}}>
+        <div key={props.id} style={{paddingTop: '10px'}} className={!visible && 'deleted'}>
             <Container>
                 <Card onClick={ShowModal}>
                     <Card.Body>
@@ -74,7 +76,7 @@ const PostCard = (props) => {
                 userLike={userLike}
                 likes={likes}
                 Like={Like}
-                deletePostFromList={props.deletePostFromList}
+                setVisible={setVisible}
             />
         </div>
     );

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {createPost, editPost} from "../http/postApi";
 import {post as GetPost} from "../http/postApi";
-import {linkTagToPost, tags as getTags} from "../http/tagApi";
+import {changeLink, linkTagToPost, tags as getTags, unlinkTagToPost} from "../http/tagApi";
 import {Card, Form, Button} from "react-bootstrap";
 import '../styles/createPostCard.css'
 import {useNavigate, useParams} from "react-router-dom";
@@ -15,12 +15,20 @@ const EditPost = () => {
     const [image, setImage] = useState(null)
     const [result, setResult] = useState('')
     const [post, setPost] = useState(true)
+    const [tag, setTag] = useState(0)
+    const [tags, setTags] = useState([])
     const navigate = useNavigate()
-
+    useEffect(() => {
+        getTags().then((res) => {
+            setTags(res);
+            setTag(res[0].id);
+        });
+    }, [])
     useEffect(() => {
         GetPost(id).then((res) => {
             setTitle(res.title)
             setContent(res.content)
+            setTag(res.post_tags[0].tagId)
         }).catch(e => {
             setPost(false);
         })
@@ -32,13 +40,13 @@ const EditPost = () => {
         formData.append('title', title);
         formData.append('content', content);
         formData.append('image', image);
-        const post = await editPost(formData, id).then(e => {
-            setResult('Отредактировано успешно')
-            navigate(MY_POSTS_ROUTE)
-        }).catch(err => {
-            setResult(err)
+        const post = await editPost(formData, id).then().catch(err => {
             console.log(err)
         });
+        changeLink(tag, post.id).then().catch(err => {
+            console.log(err)
+        });
+        navigate(MY_POSTS_ROUTE)
     }
 
     if (!post) return <NotFound/>
@@ -59,6 +67,13 @@ const EditPost = () => {
                                   style={{height: '400px'}}
                                   onChange={e => setContent(e.target.value)}
                     />
+                    <Form.Select name={'Категории'} onChange={e => setTag(e.target.value)} className={'marginAll'}>
+                        {tags.map(({id, name}) => (
+                            <option selected={id === tag?true:false} key={id} value={id}>{name}</option>
+                        ))}
+                    </Form.Select>
+
+
                     <Form.Control accept="image/*" className={'marginAll'}
                                   type={'file'}
                                   onChange={e => setImage(e.target.files[0])}

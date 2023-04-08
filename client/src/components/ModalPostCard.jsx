@@ -11,8 +11,8 @@ const ModalPostCard = (props) => {
     const {user, setUser} = useContext(UserContext);
     let DeletePost = () => {
         props.onHide()
-        props.deletePostFromList(props.id)
         deletePost(props.id).then();
+        props.setVisible(false);
     }
     return (
         <Modal

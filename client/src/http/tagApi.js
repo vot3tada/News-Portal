@@ -10,6 +10,16 @@ export const linkTagToPost = async (tagId,postId) => {
     return data;
 }
 
+export const unlinkTagToPost = async (tagId,postId) => {
+    const {data} = await $host.delete('tag/link/', {tagId,postId});
+    return data;
+}
+
+export const changeLink = async (tagId,postId) => {
+    const {data} = await $host.put('tag/link/', {tagId,postId});
+    return data;
+}
+
 export const createTag = async (name) => {
     const {data} = await $host.post('tag/', {name})
     return data

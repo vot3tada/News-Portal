@@ -39,3 +39,6 @@
     margin-bottom: 0px;
     align-items: center;
 }
+.deleted{
+    display: none;
+}
