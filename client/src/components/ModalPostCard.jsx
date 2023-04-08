@@ -10,8 +10,9 @@ const ModalPostCard = (props) => {
     const navigate = useNavigate()
     const {user, setUser} = useContext(UserContext);
     let DeletePost = () => {
+        props.onHide()
+        props.deletePostFromList(props.id)
         deletePost(props.id).then();
-        navigate(POSTS_ROUTE)
     }
     return (
         <Modal

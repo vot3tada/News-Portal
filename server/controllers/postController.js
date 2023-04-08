@@ -57,6 +57,7 @@ class PostController {
             limit = limit || 25
             let offset = page * limit - limit
             let posts = await Post.findAll({
+                include: [{model: PostTag}],
                 where: {...(req.user.role == 'ADMIN'?{}:{userId: req.user.id})},
                 order: [['id', 'DESC']],
                 limit,
@@ -93,32 +94,36 @@ class PostController {
         }
     }
 
-    async getSmartAll(req, res) {
-        let {tagId, limit, page} = req.headers
-        page = page || 1
-        limit = limit || 25
-        let offset = page * limit - limit
-        const interestingPosts = await History.findAll({
-            where: {userId: req.user.id},
-            order: [['id', 'DESC']],
-            limit: 10
-        })
-        const tags = await Tag.findAll({
-            include: {
-                model: Post,
-                where: {id: {[Op.in]: interestingPosts.map(post => post.postId)}}
-            }
-        });
-        const posts = await Post.findAll({
-            include: {
-                model: Tag,
-                where: {id: {[Op.in]: tags.map(tag => tag.id)}},
-            },
-            order: [['id', 'DESC']],
-            limit,
-            offset
-        })
-        return res.json(posts)
+    async getSmartAll(req, res, next) {
+        try {
+            let {tagId, limit, page} = req.headers
+            page = page || 1
+            limit = limit || 25
+            let offset = page * limit - limit
+            const interestingPosts = await History.findAll({
+                where: {userId: req.user.id},
+                order: [['id', 'DESC']],
+                limit: 10
+            })
+            const tags = await Tag.findAll({
+                include: {
+                    model: Post,
+                    where: {id: {[Op.in]: interestingPosts.map(post => post.postId)}}
+                }
+            });
+            const posts = await Post.findAll({
+                include: {
+                    model: Tag,
+                    where: {id: {[Op.in]: tags.map(tag => tag.id)}},
+                },
+                order: [['id', 'DESC']],
+                limit,
+                offset
+            })
+            return res.json(posts)
+        } catch (e) {
+            next(e)
+        }
     }
 
     async getLikes(req, res, next) {

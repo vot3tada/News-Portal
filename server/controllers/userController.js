@@ -73,7 +73,7 @@ class UserController {
     }
 
     async saveHistory(req, res, next) {
-        {
+        try{
             if (!req.user)
             {
                 next()
@@ -86,6 +86,8 @@ class UserController {
             } catch (e) {
                 next(e)
             }
+        } catch (e) {
+            next(e)
         }
     }
 }

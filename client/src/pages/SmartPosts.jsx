@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {smartPosts as GetSmartPosts} from "../http/postApi";
 import PostCard from "../components/PostCard";
+import {tags as GetTags} from "../http/tagApi";
 
 const SmartPosts = () => {
     const [posts, setPosts] = useState([]);
@@ -30,8 +31,9 @@ const SmartPosts = () => {
     }, [isLoad])
     return (
         <div>
-            {posts.map(({id, title, content, image, userId}) => (
-                <PostCard id={id} title={title} content={content} image={image}/>
+            {posts.map(({id, title, content, image, userId, tags}) => (
+                <PostCard id={id} title={title} content={content} image={image}
+                          tag={tags[0].name}/>
             ))}
             {posts &&
                 <div style={{height: 20}} ref={lastElement}></div>}

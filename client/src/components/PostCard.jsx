@@ -74,6 +74,7 @@ const PostCard = (props) => {
                 userLike={userLike}
                 likes={likes}
                 Like={Like}
+                deletePostFromList={props.deletePostFromList}
             />
         </div>
     );

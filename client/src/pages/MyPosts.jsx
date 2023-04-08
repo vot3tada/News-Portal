@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {myPosts as GetPosts} from "../http/postApi";
 import PostCard from "../components/PostCard";
+import {tags as GetTags} from "../http/tagApi";
 
 const MyPosts = () => {
     const [posts, setPosts] = useState([]);
@@ -9,9 +10,21 @@ const MyPosts = () => {
     const lastElement = useRef();
     const observer = useRef();
     const [end, setEnd] = useState(false);
+    const [tags, setTags] = useState([]);
+    useEffect(() => {
+        GetTags().then((res) => {
+            setTags(res);
+        });
+    }, []);
+
+    const deletePostFromList = (id) => {
+        setPosts(posts.filter(post => post.id !== id));
+    }
+
     useEffect(() => {
         GetPosts({page: page}).then((res) => {
             setPosts(prev => [...prev, ...res]);
+            console.log(res)
             if (res.length == 0) setEnd(true);
             setLoad(!isLoad);
         });
@@ -30,8 +43,9 @@ const MyPosts = () => {
     }, [isLoad])
     return (
         <div>
-            {posts.map(({id, title, content, image, userId}) => (
-                <PostCard id={id} title={title} content={content} image={image}/>
+            {posts.map(({id, title, content, image, userId, post_tags}) => (
+                <PostCard id={id} title={title} content={content} image={image}
+                          tag={tags.find(tag => tag.id == post_tags[0].tagId)?.name}/>
             ))}
             {posts &&
                 <div style={{height: 20}} ref={lastElement}></div>}
