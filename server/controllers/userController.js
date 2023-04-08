@@ -49,16 +49,22 @@ class UserController {
         
     }
 
-    async auth(req, res) {
-        const token = generateJwt(req.user.id, req.user.login, req.user.role)
-        return res.json({token})
+    async auth(req, res, next) {
+        try {
+            const token = generateJwt(req.user.id, req.user.login, req.user.role)
+            return res.json({token})
+        } catch (e)
+        {
+            next(e)
+        }
     }
 
     async roleChanger(req, res, next) {
         try
         {
             const {login, role} = req.body
-            const user = await User.findOne({where: {login}})
+            const user = await User.findOne({where: {login: login}})
+
             if (!user) throw ApiError.internal('Пользователь не найден')
             user.role = role
             user.save()

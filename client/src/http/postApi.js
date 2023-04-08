@@ -57,3 +57,12 @@ export const deletePost = async (id) => {
     return data
 }
 
+export const setLike = async (id) => {
+    const {data} = await $host.post('post/like/'+id)
+    return data
+}
+export const getLike = async (id) => {
+    const {data} = await $host.get('post/like/'+id)
+    return data
+}
+

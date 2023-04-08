@@ -7,6 +7,12 @@ class TagController {
         const tag = await Tag.create({name})
         return res.json(tag)
     }
+    async delete(req, res) {
+        const {id} = req.params
+        const tag = await Tag.findOne({where:{id: id}})
+        tag.destroy();
+        return res.json({status: 'deleted'})
+    }
 
     async getAll(req, res) {
         const tags = await Tag.findAll()
@@ -24,7 +30,17 @@ class TagController {
         {
             next(e)
         }
-
+    }
+    async unlinkPostToTag(req, res, next) {
+        try {
+            const {tagId, postId} = req.body
+            if (!tagId || !postId) throw ApiError.notFound()
+            const linked = await PostTag.findOne({where: {tagId: tagId, postId: postId}})
+            linked.destroy()
+            return res.json({status: 'unlinked'})
+        } catch (e) {
+            next(e)
+        }
     }
 }
 

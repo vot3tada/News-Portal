@@ -1,12 +1,23 @@
 const jwt = require('jsonwebtoken')
+const {User} = require("../models/models");
 
-module.exports = function (req, res, next) {
+const generateJwt = (id, login, role) => {
+    return jwt.sign({id, login, role},
+        process.env.SECRET_KEY,
+        {expiresIn: '24h'})
+}
+
+module.exports = async function (req, res, next) {
     if (req.method === "OPTIONS") next()
     try
     {
-        const token = req.headers.authorization.split(' ')[1]
+        let token = req.headers.authorization.split(' ')[1]
         if (!token) return res.status(401).json({message: 'Не авторизован'})
-        const payload = jwt.verify(token, process.env.SECRET_KEY)
+        let payload = jwt.verify(token, process.env.SECRET_KEY)
+        req.user = payload
+        let user = await User.findOne({where: {login: req.user.login}})
+        token = generateJwt(user.id, user.login, user.role)
+        payload = jwt.verify(token, process.env.SECRET_KEY)
         req.user = payload
         next()
     }

@@ -4,6 +4,7 @@ import {Button, Card, Col, Container, Row, Modal} from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
 import {EDIT_POST_ROUTE, MY_POSTS_ROUTE, POSTS_ROUTE} from "../utils/consts";
 import {deletePost} from "../http/postApi";
+  import '../styles/PostCard.css'
 
 const ModalPostCard = (props) => {
     const navigate = useNavigate()
@@ -33,8 +34,9 @@ const ModalPostCard = (props) => {
                         {props.content}
                     </Card.Text>
                 </Modal.Body>
-                <Modal.Footer>
-                    {window.location.pathname == '/my' &&
+                <Modal.Footer className={'cardFooter'}>
+                    {props.tag}
+                    {window.location.pathname == '/my'?
                         <>
                             <Link
                                 to={EDIT_POST_ROUTE.substring(0, EDIT_POST_ROUTE.length - 3) + props.id}><Button
@@ -43,12 +45,16 @@ const ModalPostCard = (props) => {
                                 Удалить
                             </Button>
                         </>
+                        :
+                        <Button variant={props.userLike ? 'danger' : 'primary'}
+                                onClick={props.Like}>{'♥ ' + (props.likes.length)}</Button>
                     }
-                    <Button onClick={props.onHide}>Закрыть</Button>
+
                 </Modal.Footer>
             </Card>
         </Modal>
-    );
+    )
+        ;
 };
 
 export default ModalPostCard;

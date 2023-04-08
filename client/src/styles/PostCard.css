@@ -32,3 +32,10 @@
     -webkit-line-clamp: 10;
     -webkit-box-orient: vertical;
 }
+.cardFooter {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    align-items: center;
+}

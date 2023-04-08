@@ -5,6 +5,8 @@ const uuid = require('uuid')
 const fs = require('fs')
 const {where, Op} = require("sequelize");
 
+
+
 class PostController {
     async add(req, res, next) {
         try {
@@ -28,7 +30,7 @@ class PostController {
             const {id} = req.params
             const {title, content} = req.body
             let post = await Post.findOne({where: {...(id ? {id: +id} : {})}})
-            if (post.userId != req.user.id) throw ApiError(403, 'Нет доступа')
+            if (req.user.role != 'ADMIN' && post.userId != req.user.id) throw ApiError(403, 'Нет доступа')
             post.title = title
             post.content = content
             if (req.files) {
@@ -55,7 +57,7 @@ class PostController {
             limit = limit || 25
             let offset = page * limit - limit
             let posts = await Post.findAll({
-                where: {userId: req.user.id},
+                where: {...(req.user.role == 'ADMIN'?{}:{userId: req.user.id})},
                 order: [['id', 'DESC']],
                 limit,
                 offset
@@ -96,15 +98,15 @@ class PostController {
         page = page || 1
         limit = limit || 25
         let offset = page * limit - limit
-        const interestingPosts = await Post.findAll({
-            include: {model: History, where: {userId: req.user.id}},
+        const interestingPosts = await History.findAll({
+            where: {userId: req.user.id},
             order: [['id', 'DESC']],
             limit: 10
         })
         const tags = await Tag.findAll({
             include: {
                 model: Post,
-                where: {id: {[Op.in]: interestingPosts.map(post => post.id)}}
+                where: {id: {[Op.in]: interestingPosts.map(post => post.postId)}}
             }
         });
         const posts = await Post.findAll({
@@ -119,11 +121,22 @@ class PostController {
         return res.json(posts)
     }
 
+    async getLikes(req, res, next) {
+        try {
+            const {id} = req.params
+            if (!id) throw ApiError.notFound()
+            let likes = await Like.findAll({where: {postId: id}})
+            return res.json(likes)
+        } catch (e) {
+            next(e)
+        }
+    }
+
     async likeorUnlikePost(req, res, next) {
         try {
             const {id} = req.params
             if (!id) throw ApiError.notFound()
-            let like = await Like.findOne({userId: req.user.id, postId: id})
+            let like = await Like.findOne({where: {userId: req.user.id, postId: id}})
             if (like) {
                 like.destroy();
                 return res.json({statusLike: 'Deleted', like})
@@ -151,7 +164,7 @@ class PostController {
         try {
             const {id} = req.params
             let post = await Post.findOne({where: {...(id ? {id: +id} : {})}})
-            if (post.userId != req.user.id) throw ApiError(403, 'Нет доступа')
+            if (req.user.role != 'ADMIN' && post.userId != req.user.id) throw ApiError(403, 'Нет доступа')
             if (post.image) fs.unlink(path.resolve(__dirname, '..', 'static', post.image), (err) => {
                 if (err) throw err
             })

@@ -7,7 +7,10 @@ const UserProvider = (props) => {
     const [user, setUser] = useState();
     const token = localStorage.getItem('token');
     if (token && !user)
+    {
         auth().then(data => setUser(data));
+    }
+
     return (
         <UserContext.Provider value={{user, setUser}}>
             {props.children}
