@@ -7,12 +7,15 @@ import {changeRole} from "../http/userAPI";
 const Admin = () => {
     const {user, setUser} = useContext(UserContext);
     const [login, setLogin] = useState('');
-    const [role, setRole] = useState('USER')
-    if (!user || user?.role != 'ADMIN') return <NotFound/>
-
+    const [role, setRole] = useState('USER');
+    const [tag, setTag] = useState('');
     const ChangeRole = () => {
         changeRole(login, role).then().catch(err => console.log(err))
     }
+    const addTag = () => {
+
+    }
+    if (!user || user?.role != 'ADMIN') return <NotFound/>
     return (
         <div className={'centerCreateCard'}>
             <Card style={{width: '35rem'}}>
@@ -45,9 +48,9 @@ const Admin = () => {
                             <Container>
                                 <Row>
                                     <Col>
-                                        <Form.Control type="input" placeholder="Название тега"/>
+                                        <Form.Control type="input" placeholder="Название тега" value={tag} onChange={e => setTag(e.target.value)}/>
                                     </Col>
-                                    <Col >
+                                    <Col>
                                         <Button>Добавить</Button>
                                     </Col>
                                 </Row>

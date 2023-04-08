@@ -1,11 +1,6 @@
 const jwt = require('jsonwebtoken')
 const {User} = require("../models/models");
-
-const generateJwt = (id, login, role) => {
-    return jwt.sign({id, login, role},
-        process.env.SECRET_KEY,
-        {expiresIn: '24h'})
-}
+const {generateJwt} = require('../staticFunctions/generateJwt')
 
 module.exports = async function (req, res, next) {
     if (req.method === "OPTIONS") next()
