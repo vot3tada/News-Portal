@@ -21,7 +21,7 @@ const PostCard = (props) => {
             setLikes(res)
             if (res.find(like => like.userId == user.id)) setUserLike(true);
         });
-    }, [user])
+    }, [user, props.update])
     const Like = (event) => {
         setLike(props.id).then(() => {
             if (userLike) likes.pop()

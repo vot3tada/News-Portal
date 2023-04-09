@@ -14,6 +14,7 @@ const Posts = () => {
     const [end, setEnd] = useState(false);
     const [tag, setTag] = useState(-1);
     const [tags, setTags] = useState([]);
+    const [update, setUpdate] = useState(false)
     useEffect(() => {
         GetTags().then((res) => {
             setTags(res);
@@ -40,10 +41,11 @@ const Posts = () => {
     }, [isLoad])
     useEffect(() => {
         setFilteredPosts(posts.filter(post => tag != -1?post.post_tags[0].tagId == tag:post));
+        setUpdate(!update);
     }, [posts, tag])
     return (
         <Container>
-            <Container>
+            <Container style={{paddingTop: '10px'}}>
                 <Card>
                     <Card.Body>
                         <Row>
@@ -62,7 +64,7 @@ const Posts = () => {
             </Container>
             {filteredPosts.map(({id, title, content, image, userId, post_tags}) => (
                 <PostCard id={id} title={title} content={content} image={image}
-                          tag={tags.find(tag => tag.id == post_tags[0].tagId)?.name}/>
+                          tag={tags.find(tag => tag.id == post_tags[0].tagId)?.name} update={update}/>
             ))}
             {posts &&
                 <div style={{height: 20}} ref={lastElement}></div>}
