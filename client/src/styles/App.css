@@ -12,3 +12,7 @@
     height: 100%;
     position: fixed;
 }
+.alignCenter{
+    display: flex;
+    align-items: center;
+}

@@ -24,7 +24,6 @@ const Navbar = () => {
                     <NavbarBoot.Toggle aria-controls="responsive-navbar-nav"/>
                     <NavbarBoot.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
-
                             {user &&
                                 <Nav.Link>
                                     <NavLink to={SMART_POSTS_ROUTE} className={'Link'}>

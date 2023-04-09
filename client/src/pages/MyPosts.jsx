@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {myPosts as GetPosts} from "../http/postApi";
 import PostCard from "../components/PostCard";
 import {tags as GetTags} from "../http/tagApi";
+import {Button, Card, Col, Container, Row} from "react-bootstrap";
 
 const MyPosts = () => {
     const [posts, setPosts] = useState([]);
@@ -39,6 +40,15 @@ const MyPosts = () => {
     }, [isLoad])
     return (
         <div>
+            <Container>
+                <Card>
+                    <Card.Body>
+                        <Row>
+                            <Col>Категории</Col>
+                        </Row>
+                    </Card.Body>
+                </Card>
+            </Container>
             {posts.map(({id, title, content, image, userId, post_tags}) => (
                 <PostCard id={id} title={title} content={content} image={image}
                           tag={tags.find(tag => tag.id == post_tags[0].tagId)?.name}/>
