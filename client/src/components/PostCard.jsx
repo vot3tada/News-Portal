@@ -19,7 +19,11 @@ const PostCard = (props) => {
     useEffect(() => {
         getLike(props.id).then(res => {
             setLikes(res)
-            if (res.find(like => like.userId == user.id)) setUserLike(true);
+            setUserLike(false);
+            if (res.find(like => like.userId == user?.id))
+            {
+                setUserLike(true);
+            }
         });
     }, [user, props.update])
     const Like = (event) => {
@@ -35,7 +39,7 @@ const PostCard = (props) => {
         GetPost(props.id).then();
     }
     return (
-        <div key={props.id} style={{paddingTop: '10px'}} className={!visible && 'deleted'}>
+        <div style={{paddingTop: '10px'}} className={!visible ? 'deleted' : undefined}>
             <Container>
                 <Card onClick={ShowModal}>
                     <Card.Body>
@@ -56,7 +60,7 @@ const PostCard = (props) => {
                         </div>
                         <div className={'cardFooter'}>
                             <div>
-                                {props.tag}
+                                {`${props.createdAt.substring(0,10)} ${props.tag}`}
                             </div>
                             <div>
                                 <Button variant={userLike?'danger':'primary'} onClick={Like}>{'♥ ' + (likes.length)}</Button>
@@ -73,6 +77,7 @@ const PostCard = (props) => {
                 content={props.content}
                 image={props.image}
                 tag={props.tag}
+                createdAt={props.createdAt}
                 userLike={userLike}
                 likes={likes}
                 Like={Like}

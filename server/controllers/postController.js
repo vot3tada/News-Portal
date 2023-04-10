@@ -174,7 +174,7 @@ class PostController {
             let post = await Post.findOne({where: {...(id ? {id: +id} : {})}})
             if (req.user.role != 'ADMIN' && post.userId != req.user.id) throw ApiError(403, 'Нет доступа')
             if (post.image) fs.unlink(path.resolve(__dirname, '..', 'static', post.image), (err) => {
-                if (err) throw err
+                if (err) console.log(err)
             })
             await post.destroy()
             return res.json({})

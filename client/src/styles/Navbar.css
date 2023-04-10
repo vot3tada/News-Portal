@@ -7,14 +7,29 @@
     font-family: "Arial Black";
 }
 .Link{
-    margin-left: 10px;
-    margin-right: 10px;
     font-size: 15px;
     text-decoration: none;
+    padding: 10px;
+    width: 100%;
 }
 .navbarMargin{
     margin: 20px;
 }
 .dropdown>a::after {
     color: #0d6efd;
+}
+.nav-link{
+    width: max-content;
+}
+.navbar-collapse,
+.navbar-nav{
+
+}
+.dropdown-item{
+    padding: 0;
+}
+.LinkDropdown-item{
+    display: flex;
+    padding: 4px 8px;
+    width: 100%;
 }

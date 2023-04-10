@@ -21,7 +21,6 @@ const MyPosts = () => {
     useEffect(() => {
         GetPosts({page: page}).then((res) => {
             setPosts(prev => [...prev, ...res]);
-            console.log(res)
             if (res.length == 0) setEnd(true);
             setLoad(!isLoad);
         });
@@ -40,18 +39,9 @@ const MyPosts = () => {
     }, [isLoad])
     return (
         <div>
-            <Container>
-                <Card>
-                    <Card.Body>
-                        <Row>
-                            <Col>Категории</Col>
-                        </Row>
-                    </Card.Body>
-                </Card>
-            </Container>
-            {posts.map(({id, title, content, image, userId, post_tags}) => (
+            {posts.map(({id, title, content, image, userId, post_tags, createdAt}) => (
                 <PostCard id={id} title={title} content={content} image={image}
-                          tag={tags.find(tag => tag.id == post_tags[0].tagId)?.name}/>
+                          tag={tags.find(tag => tag?.id == post_tags[0]?.tagId)?.name} createdAt={createdAt}/>
             ))}
             {posts &&
                 <div style={{height: 20}} ref={lastElement}></div>}

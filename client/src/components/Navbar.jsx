@@ -55,12 +55,12 @@ const Navbar = () => {
                                     title={<span className="text-primary my-auto">Панель администратора</span>}
                                     id="nav-dropdown">
                                     <NavDropdown.Item>
-                                        <NavLink className={'Link'} to={MY_POSTS_ROUTE}>
+                                        <NavLink className={'Link LinkDropdown-item'} to={MY_POSTS_ROUTE}>
                                             Все новости
                                         </NavLink>
                                     </NavDropdown.Item>
                                     <NavDropdown.Item>
-                                        <NavLink className={'Link'} to={ADMIN_ROUTE}>
+                                        <NavLink className={'Link LinkDropdown-item'} to={ADMIN_ROUTE}>
                                             Изменение ролей
                                         </NavLink>
                                     </NavDropdown.Item>

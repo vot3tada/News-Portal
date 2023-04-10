@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useMemo} from 'react';
 import {posts as GetPosts} from "../http/postApi";
 import {tags, tags as GetTags} from "../http/tagApi"
 import PostCard from "../components/PostCard";
@@ -6,7 +6,7 @@ import {Card, Col, Container, Form, Row} from "react-bootstrap";
 
 const Posts = () => {
     const [posts, setPosts] = useState([]);
-    const [filteredPosts, setFilteredPosts] = useState([]);
+    // const [filteredPosts, setFilteredPosts] = useState([]);
     const [page, setPage] = useState(1);
     const [isLoad, setLoad] = useState(false);
     const lastElement = useRef();
@@ -15,6 +15,10 @@ const Posts = () => {
     const [tag, setTag] = useState(-1);
     const [tags, setTags] = useState([]);
     const [update, setUpdate] = useState(false)
+    const filteredPosts = useMemo(() => {
+        return posts.filter(post => tag != -1 ? post.post_tags[0].tagId == tag : post)
+    }, [posts, tag])
+
     useEffect(() => {
         GetTags().then((res) => {
             setTags(res);
@@ -40,9 +44,8 @@ const Posts = () => {
         observer.current.observe(lastElement.current);
     }, [isLoad])
     useEffect(() => {
-        setFilteredPosts(posts.filter(post => tag != -1?post.post_tags[0].tagId == tag:post));
         setUpdate(!update);
-    }, [posts, tag])
+    }, [filteredPosts])
     return (
         <Container>
             <Container style={{paddingTop: '10px'}}>
@@ -62,9 +65,10 @@ const Posts = () => {
                     </Card.Body>
                 </Card>
             </Container>
-            {filteredPosts.map(({id, title, content, image, userId, post_tags}) => (
-                <PostCard id={id} title={title} content={content} image={image}
-                          tag={tags.find(tag => tag.id == post_tags[0].tagId)?.name} update={update}/>
+            {filteredPosts.map(({id, title, content, image, post_tags, createdAt}) => (
+                <PostCard key={id} id={id} title={title} content={content} image={image}
+                          tag={tags.find(tag => tag.id == post_tags[0].tagId)?.name} update={update}
+                          createdAt={createdAt}/>
             ))}
             {posts &&
                 <div style={{height: 20}} ref={lastElement}></div>}

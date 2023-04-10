@@ -31,9 +31,9 @@ const SmartPosts = () => {
     }, [isLoad])
     return (
         <div>
-            {posts.map(({id, title, content, image, userId, tags}) => (
+            {posts.map(({id, title, content, image, userId, tags, createdAt}) => (
                 <PostCard id={id} title={title} content={content} image={image}
-                          tag={tags[0].name}/>
+                          tag={tags[0].name} createdAt={createdAt}/>
             ))}
             {posts &&
                 <div style={{height: 20}} ref={lastElement}></div>}
