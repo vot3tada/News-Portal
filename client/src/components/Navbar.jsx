@@ -61,7 +61,7 @@ const Navbar = () => {
                                     </NavDropdown.Item>
                                     <NavDropdown.Item>
                                         <NavLink className={'Link LinkDropdown-item'} to={ADMIN_ROUTE}>
-                                            Изменение ролей
+                                            Роли, теги
                                         </NavLink>
                                     </NavDropdown.Item>
                                 </NavDropdown>

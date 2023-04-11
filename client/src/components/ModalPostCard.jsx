@@ -50,12 +50,10 @@ const ModalPostCard = (props) => {
                         <Button variant={props.userLike ? 'danger' : 'primary'}
                                 onClick={props.Like}>{'♥ ' + (props.likes.length)}</Button>
                     }
-
                 </Modal.Footer>
             </Card>
         </Modal>
-    )
-        ;
+    );
 };
 
 export default ModalPostCard;

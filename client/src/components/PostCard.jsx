@@ -51,15 +51,15 @@ const PostCard = (props) => {
                                     </Col>
                                 }
                                 <Col xl={'7'}>
-                                    <Card.Title>{props.title}</Card.Title>
-                                    <Card.Text className={'cardText'}>
+                                    <Card.Title className={'noselect'}>{props.title}</Card.Title>
+                                    <Card.Text className={'cardText noselect'}>
                                         {props.content}
                                     </Card.Text>
                                 </Col>
                             </Row>
                         </div>
                         <div className={'cardFooter'}>
-                            <div>
+                            <div className={'noselect'}>
                                 {`${props.createdAt.substring(0,10)} ${props.tag}`}
                             </div>
                             <div>

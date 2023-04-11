@@ -23,7 +23,7 @@ const SmartPosts = () => {
     }, [page])
 
     useObserver(lastElement,end,isLoad,() => setPage(page + 1))
-    
+
     return (
         <div>
             {posts?.map(({id, title, content, image, userId, tags, createdAt}) => (
