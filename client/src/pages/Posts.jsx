@@ -3,6 +3,10 @@ import {posts as GetPosts} from "../http/postApi";
 import {tags, tags as GetTags} from "../http/tagApi"
 import PostCard from "../components/PostCard";
 import {Card, Col, Container, Form, Row} from "react-bootstrap";
+import {useTags} from "../hooks/useTags";
+import NotFound from "../components/NotFound";
+import {usePosts} from "../hooks/usePosts";
+import {useObserver} from "../hooks/useObserver";
 
 const Posts = () => {
     const [posts, setPosts] = useState([]);
@@ -19,30 +23,12 @@ const Posts = () => {
         return posts.filter(post => tag != -1 ? post.post_tags[0].tagId == tag : post)
     }, [posts, tag])
 
-    useEffect(() => {
-        GetTags().then((res) => {
-            setTags(res);
-        });
-    }, []);
-    useEffect(() => {
-        GetPosts({page: page}).then((res) => {
-            setPosts(prev => [...prev, ...res]);
-            if (res.length == 0) setEnd(true);
-            setLoad(!isLoad);
-        });
-    }, [page])
+    useTags(setTags);
 
-    useEffect(() => {
-        if (end) return
-        if (observer.current) observer.current.disconnect();
-        let callback = function (entries, observer) {
-            if (entries[0].isIntersecting) {
-                setPage(page + 1);
-            }
-        };
-        observer.current = new IntersectionObserver(callback);
-        observer.current.observe(lastElement.current);
-    }, [isLoad])
+    usePosts(page, setPosts, setEnd, isLoad, setLoad);
+
+    useObserver(lastElement,end,isLoad,() => setPage(page + 1))
+
     useEffect(() => {
         setUpdate(!update);
     }, [filteredPosts])
@@ -65,7 +51,7 @@ const Posts = () => {
                     </Card.Body>
                 </Card>
             </Container>
-            {filteredPosts.map(({id, title, content, image, post_tags, createdAt}) => (
+            {filteredPosts?.map(({id, title, content, image, post_tags, createdAt}) => (
                 <PostCard key={id} id={id} title={title} content={content} image={image}
                           tag={tags.find(tag => tag.id == post_tags[0].tagId)?.name} update={update}
                           createdAt={createdAt}/>

@@ -2,6 +2,9 @@ import React, {useState, useEffect, useRef} from 'react';
 import {smartPosts as GetSmartPosts} from "../http/postApi";
 import PostCard from "../components/PostCard";
 import {tags as GetTags} from "../http/tagApi";
+import NotFound from "../components/NotFound";
+import {usePosts} from "../hooks/usePosts";
+import {useObserver} from "../hooks/useObserver";
 
 const SmartPosts = () => {
     const [posts, setPosts] = useState([]);
@@ -10,6 +13,7 @@ const SmartPosts = () => {
     const lastElement = useRef();
     const observer = useRef();
     const [end, setEnd] = useState(false);
+
     useEffect(() => {
         GetSmartPosts({page: page}).then((res) => {
             setPosts(prev => [...prev, ...res]);
@@ -18,20 +22,11 @@ const SmartPosts = () => {
         });
     }, [page])
 
-    useEffect(() => {
-        if (end) return
-        if (observer.current) observer.current.disconnect();
-        let callback = function (entries, observer) {
-            if (entries[0].isIntersecting) {
-                setPage(page + 1);
-            }
-        };
-        observer.current = new IntersectionObserver(callback);
-        observer.current.observe(lastElement.current);
-    }, [isLoad])
+    useObserver(lastElement,end,isLoad,() => setPage(page + 1))
+    
     return (
         <div>
-            {posts.map(({id, title, content, image, userId, tags, createdAt}) => (
+            {posts?.map(({id, title, content, image, userId, tags, createdAt}) => (
                 <PostCard id={id} title={title} content={content} image={image}
                           tag={tags[0].name} createdAt={createdAt}/>
             ))}
