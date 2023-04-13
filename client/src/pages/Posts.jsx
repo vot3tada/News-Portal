@@ -27,7 +27,8 @@ const Posts = () => {
 
     usePosts(page, setPosts, setEnd, isLoad, setLoad);
 
-    useObserver(lastElement,end,isLoad,() => setPage(page + 1))
+    useObserver(lastElement,end,isLoad,() => {setPage(page + 1)})
+
 
     useEffect(() => {
         setUpdate(!update);

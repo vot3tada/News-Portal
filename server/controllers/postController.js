@@ -76,7 +76,7 @@ class PostController {
         try {
             let {tagId, limit, page} = req.headers
             page = page || 1
-            limit = limit || 25
+            limit = limit || 5
             let offset = page * limit - limit
             let posts = await Post.findAll({
                 include: [{model: PostTag, where: {...(tagId ? {tagId: +tagId} : {})}}],
@@ -98,7 +98,7 @@ class PostController {
         try {
             let {tagId, limit, page} = req.headers
             page = page || 1
-            limit = limit || 25
+            limit = limit || 5
             let offset = page * limit - limit
             const interestingPosts = await History.findAll({
                 where: {userId: req.user.id},
