@@ -1,12 +1,20 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {UserContext} from "../AppProviders/UserProvider";
-import {Button, Card, Col, Container, Row, Modal} from "react-bootstrap";
+import {Button, Card, Col, Container, Row, Modal, Form} from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
 import {EDIT_POST_ROUTE, MY_POSTS_ROUTE, POSTS_ROUTE} from "../utils/consts";
 import {deletePost} from "../http/postApi";
 import '../styles/PostCard.css'
 
 const ModalPostCard = (props) => {
+    const textareaRef = useRef(null);
+    useEffect(() => {
+        if (textareaRef.current === null) return
+        textareaRef.current.style.height = "0px";
+        const scrollHeight = textareaRef.current.scrollHeight;
+        textareaRef.current.style.height = scrollHeight + "px";
+    }, [props.show]);
+
     const navigate = useNavigate()
     const {user, setUser} = useContext(UserContext);
     let DeletePost = () => {
@@ -32,7 +40,11 @@ const ModalPostCard = (props) => {
                         <Card.Img src={'http://localhost:5000/' + props.image}/>
                     }
                     <Card.Text>
-                        {props.content}
+                        <Form.Control ref={textareaRef}
+                                      className={'cardText noselect'}
+                                      readOnly={true}
+                                      as="textarea"
+                                      value={props.content}/>
                     </Card.Text>
                 </Modal.Body>
                 <Modal.Footer className={'cardFooter'}>

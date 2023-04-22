@@ -18,7 +18,13 @@ const MyPosts = () => {
 
     useTags(setTags);
 
-    usePosts(page, setPosts, setEnd, isLoad, setLoad);
+    useEffect(() => {
+        GetPosts({page: page}).then((res) => {
+            setPosts(prev => [...prev, ...res]);
+            if (res.length == 0) setEnd(true);
+            setLoad(!isLoad);
+        });
+    }, [page])
 
     useObserver(lastElement,end,isLoad,() => setPage(page + 1))
 

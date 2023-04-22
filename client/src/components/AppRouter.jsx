@@ -1,6 +1,5 @@
-import React, {useContext} from 'react';
+import {useContext} from 'react';
 import {useRoutes} from 'react-router-dom'
-//import {Context} from "../";
 import {privateRoutes, publicRoutes} from "../routes";
 import {UserContext} from "../AppProviders/UserProvider";
 

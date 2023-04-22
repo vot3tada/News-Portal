@@ -53,7 +53,7 @@ const PostCard = (props) => {
                                 <Col xl={'7'}>
                                     <Card.Title className={'noselect'}>{props.title}</Card.Title>
                                     <Card.Text className={'cardText noselect'}>
-                                        {props.content}
+                                        <Form.Control className={'cardText noselect'} readOnly={true} as="textarea" rows={11} value={props.content}/>
                                     </Card.Text>
                                 </Col>
                             </Row>
