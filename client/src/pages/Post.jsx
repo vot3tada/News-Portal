@@ -50,7 +50,7 @@ const Post = () => {
                             <h2>{post?.title}</h2>
                         </div>
                         {post?.image &&
-                            <Card.Img variant="top" src={'http://localhost:5000/' + post?.image}/>}
+                            <Card.Img variant="top" src={process.env.REACT_APP_API_URL + post?.image}/>}
                         <Card.Text>
                             <p className={'contentText'}>{post?.content}</p>
                         </Card.Text>

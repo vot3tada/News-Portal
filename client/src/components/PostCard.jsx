@@ -47,7 +47,7 @@ const PostCard = (props) => {
                             <Row>
                                 {props.image &&
                                     <Col xl={'5'}>
-                                        <Card.Img src={'http://localhost:5000/' + props.image}/>
+                                        <Card.Img src={process.env.REACT_APP_API_URL + props.image}/>
                                     </Col>
                                 }
                                 <Col xl={'7'}>

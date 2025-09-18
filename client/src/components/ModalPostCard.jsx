@@ -37,7 +37,7 @@ const ModalPostCard = (props) => {
                 </Modal.Header>
                 <Modal.Body>
                     {props.image &&
-                        <Card.Img src={'http://localhost:5000/' + props.image}/>
+                        <Card.Img src={process.env.REACT_APP_API_URL + props.image}/>
                     }
                     <Card.Text>
                         <Form.Control ref={textareaRef}

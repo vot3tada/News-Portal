@@ -20,11 +20,6 @@ services:
   news_portal:
     container_name: news_portal
     image: news_portal:1.0
-    logging:
-      driver: "json-file"
-      options:
-        max-file: 5
-        max-size: 10m
     build:
       context: "server"
       dockerfile: Dockerfile
@@ -40,11 +35,6 @@ services:
   news_portal_front:
     container_name: news_portal_front
     image: news_portal_front:1.0
-    logging:
-      driver: "json-file"
-      options:
-        max-file: 5
-        max-size: 10m
     build:
       context: "client"
       dockerfile: Dockerfile
@@ -55,6 +45,7 @@ services:
       - "3000:3000"
     environment:
       - TZ=Europe/Moscow
+    restart: always
 volumes:
   postgres_data:
   static:
